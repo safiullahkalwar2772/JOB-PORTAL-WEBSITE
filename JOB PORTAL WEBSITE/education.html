@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education – PakJobs Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1a56db;--blue-light:#3b82f6;--green:#059669;--green-light:#10b981;--white:#ffffff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-600:#475569;--red:#ef4444;--gold:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#f0f4f8;min-height:100vh;}
+nav{background:var(--navy);padding:0 2rem;height:65px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);}
+.logo-text span{color:var(--green-light);}
+.nav-right a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;margin-left:1.5rem;}
+.progress-bar{background:var(--white);border-bottom:1px solid #e2e8f0;padding:1rem 2rem;}
+.pb-inner{max-width:1000px;margin:0 auto;}
+.pb-steps{display:flex;align-items:center;}
+.pb-step{display:flex;align-items:center;flex:1;}
+.pb-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+.pb-dot.active{background:var(--blue);color:var(--white);box-shadow:0 0 0 4px rgba(26,86,219,0.2);}
+.pb-dot.done{background:var(--green);color:var(--white);}
+.pb-dot.pending{background:#e2e8f0;color:#94a3b8;}
+.pb-label{font-size:0.75rem;font-weight:600;color:#64748b;margin-left:8px;white-space:nowrap;}
+.pb-label.active{color:var(--blue);}
+.pb-label.done{color:var(--green);}
+.pb-line{flex:1;height:2px;background:#e2e8f0;margin:0 8px;}
+.pb-line.done{background:var(--green);}
+.main{max-width:1000px;margin:2rem auto;padding:0 1.5rem 4rem;}
+.page-header{margin-bottom:2rem;}
+.page-header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--navy);margin-bottom:0.3rem;}
+.page-header p{color:var(--gray-600);font-size:0.95rem;}
+.edu-card{background:var(--white);border-radius:16px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,0.06);overflow:hidden;margin-bottom:1.5rem;}
+.edu-header{padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;}
+.edu-header.matric{background:linear-gradient(135deg,#1a56db,#3b82f6);}
+.edu-header.inter{background:linear-gradient(135deg,#059669,#10b981);}
+.edu-header.grad{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+.edu-header .eh-icon{font-size:1.4rem;}
+.edu-header h2{font-size:1rem;font-weight:700;color:var(--white);}
+.edu-header p{font-size:0.8rem;color:rgba(255,255,255,0.7);margin-top:1px;}
+.edu-body{padding:1.5rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:0.82rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;}
+label .req{color:var(--red);}
+label .opt{color:#94a3b8;font-size:0.75rem;font-weight:400;text-transform:none;letter-spacing:0;}
+input,select{border:1.5px solid #d1d5db;border-radius:9px;padding:0.65rem 0.9rem;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:#111827;background:#fafafa;transition:all 0.2s;outline:none;}
+input:focus,select:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,0.1);}
+input::placeholder{color:#9ca3af;}
+input[disabled]{background:#f3f4f6;color:#9ca3af;cursor:not-allowed;}
+.pct-display{background:linear-gradient(135deg,rgba(26,86,219,0.05),rgba(5,150,105,0.05));border:1.5px solid #e2e8f0;border-radius:9px;padding:0.65rem 0.9rem;font-size:0.92rem;color:#374151;font-weight:600;}
+.form-actions{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 1.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;border-radius:0 0 16px 16px;}
+.btn{padding:0.7rem 1.8rem;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;}
+.btn-next{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,86,219,0.4);}
+.btn-back{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+.btn-back:hover{background:#e2e8f0;}
+.grade-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--gold);background:rgba(245,158,11,0.1);padding:0.2rem 0.6rem;border-radius:6px;margin-top:4px;}
+@media(max-width:650px){.form-grid,.form-grid.three{grid-template-columns:1fr;}.pb-label{display:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🏛️</div>
+    <div class="logo-text">Pak<span>Jobs</span> Portal</div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="view-application.html">View Application</a>
+  </div>
+</nav>
+
+<div class="progress-bar">
+  <div class="pb-inner">
+    <div class="pb-steps">
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Personal Info</span></div>
+      <div class="pb-line done"></div>
+      <div class="pb-step"><div class="pb-dot active">2</div><span class="pb-label active">Education</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot pending">3</div><span class="pb-label">Skills</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot pending">4</div><span class="pb-label">Experience</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot pending">5</div><span class="pb-label">Review</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1>Education Details</h1>
+    <p>Provide your academic records from Matriculation to Graduation level.</p>
+  </div>
+
+  <!-- MATRIC -->
+  <div class="edu-card">
+    <div class="edu-header matric">
+      <div class="eh-icon">🏫</div>
+      <div>
+        <h2>Matriculation (SSC)</h2>
+        <p>Secondary School Certificate – Grade 9 & 10</p>
+      </div>
+    </div>
+    <div class="edu-body">
+      <div class="form-grid three">
+        <div class="form-group">
+          <label>Seat No / Roll No <span class="req">*</span></label>
+          <input type="text" id="m_seatno" placeholder="e.g. KHI-123456" required>
+        </div>
+        <div class="form-group">
+          <label>Obtained Marks <span class="req">*</span></label>
+          <input type="number" id="m_obt" placeholder="e.g. 850" min="0" oninput="calcPct('m')" required>
+        </div>
+        <div class="form-group">
+          <label>Total Marks <span class="req">*</span></label>
+          <input type="number" id="m_total" placeholder="e.g. 1050" min="0" oninput="calcPct('m')" required>
+        </div>
+        <div class="form-group">
+          <label>Percentage</label>
+          <div class="pct-display" id="m_pct">—</div>
+        </div>
+        <div class="form-group">
+          <label>Grade <span class="req">*</span></label>
+          <select id="m_grade" required>
+            <option value="">Select Grade</option>
+            <option>A+</option><option>A</option><option>B</option><option>C</option><option>D</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Year <span class="req">*</span></label>
+          <input type="number" id="m_year" placeholder="e.g. 2018" min="1990" max="2030" required>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERMEDIATE -->
+  <div class="edu-card">
+    <div class="edu-header inter">
+      <div class="eh-icon">🎓</div>
+      <div>
+        <h2>Intermediate (HSSC)</h2>
+        <p>Higher Secondary School Certificate – Grade 11 & 12</p>
+      </div>
+    </div>
+    <div class="edu-body">
+      <div class="form-grid three">
+        <div class="form-group">
+          <label>Seat No / Roll No <span class="req">*</span></label>
+          <input type="text" id="i_seatno" placeholder="e.g. KHI-654321" required>
+        </div>
+        <div class="form-group">
+          <label>Obtained Marks <span class="req">*</span></label>
+          <input type="number" id="i_obt" placeholder="e.g. 900" min="0" oninput="calcPct('i')" required>
+        </div>
+        <div class="form-group">
+          <label>Total Marks <span class="req">*</span></label>
+          <input type="number" id="i_total" placeholder="e.g. 1100" min="0" oninput="calcPct('i')" required>
+        </div>
+        <div class="form-group">
+          <label>Percentage</label>
+          <div class="pct-display" id="i_pct">—</div>
+        </div>
+        <div class="form-group">
+          <label>Grade <span class="req">*</span></label>
+          <select id="i_grade" required>
+            <option value="">Select Grade</option>
+            <option>A+</option><option>A</option><option>B</option><option>C</option><option>D</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Year <span class="req">*</span></label>
+          <input type="number" id="i_year" placeholder="e.g. 2020" min="1990" max="2030" required>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADUATION -->
+  <div class="edu-card">
+    <div class="edu-header grad">
+      <div class="eh-icon">🏛️</div>
+      <div>
+        <h2>Graduation / Bachelor's Degree</h2>
+        <p>BS / BA / B.Com / B.E / MBBS or equivalent</p>
+      </div>
+    </div>
+    <div class="edu-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Seat No / Roll No <span class="req">*</span></label>
+          <input type="text" id="g_seatno" placeholder="e.g. KU-2021-1234" required>
+        </div>
+        <div class="form-group">
+          <label>University / Institution <span class="req">*</span></label>
+          <input type="text" id="g_university" placeholder="e.g. University of Karachi" required>
+        </div>
+        <div class="form-group">
+          <label>Degree Title <span class="req">*</span></label>
+          <input type="text" id="g_degree" placeholder="e.g. BS Computer Science" required>
+        </div>
+        <div class="form-group">
+          <label>CGPA / Grade <span class="req">*</span></label>
+          <input type="text" id="g_cgpa" placeholder="e.g. 3.5 / 4.0 or A" required>
+        </div>
+        <div class="form-group">
+          <label>Obtained Marks <span class="opt">(Optional)</span></label>
+          <input type="number" id="g_obt" placeholder="e.g. 3200" min="0" oninput="calcPct('g')">
+        </div>
+        <div class="form-group">
+          <label>Total Marks <span class="opt">(Optional)</span></label>
+          <input type="number" id="g_total" placeholder="e.g. 4000" min="0" oninput="calcPct('g')">
+        </div>
+        <div class="form-group">
+          <label>Percentage <span class="opt">(Optional)</span></label>
+          <div class="pct-display" id="g_pct">—</div>
+        </div>
+        <div class="form-group">
+          <label>Year of Completion <span class="req">*</span></label>
+          <input type="number" id="g_year" placeholder="e.g. 2024" min="1990" max="2030" required>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="edu-card">
+    <div class="form-actions">
+      <a href="personal-info.html" class="btn btn-back">← Back</a>
+      <button class="btn btn-next" onclick="saveAndNext()">Next: Skills →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function calcPct(prefix){
+  const obt=parseFloat(document.getElementById(prefix+'_obt')?.value)||0;
+  const total=parseFloat(document.getElementById(prefix+'_total')?.value)||0;
+  const el=document.getElementById(prefix+'_pct');
+  if(el&&obt>0&&total>0){el.textContent=(obt/total*100).toFixed(2)+'%';}
+  else if(el){el.textContent='—';}
+}
+function saveAndNext(){
+  const req=['m_seatno','m_obt','m_total','m_grade','m_year','i_seatno','i_obt','i_total','i_grade','i_year','g_seatno','g_university','g_degree','g_cgpa','g_year'];
+  let valid=true;
+  req.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&!el.value.trim()){el.style.borderColor='#ef4444';valid=false;}
+    else if(el){el.style.borderColor='';}
+  });
+  if(!valid){alert('Please fill all required fields.');return;}
+  const data={
+    matric:{seatno:v('m_seatno'),obt:v('m_obt'),total:v('m_total'),pct:document.getElementById('m_pct').textContent,grade:v('m_grade'),year:v('m_year')},
+    inter:{seatno:v('i_seatno'),obt:v('i_obt'),total:v('i_total'),pct:document.getElementById('i_pct').textContent,grade:v('i_grade'),year:v('i_year')},
+    grad:{seatno:v('g_seatno'),university:v('g_university'),degree:v('g_degree'),cgpa:v('g_cgpa'),obt:v('g_obt'),total:v('g_total'),pct:document.getElementById('g_pct').textContent,year:v('g_year')}
+  };
+  localStorage.setItem('pi_education',JSON.stringify(data));
+  window.location.href='skills.html';
+}
+function v(id){return document.getElementById(id)?.value||'';}
+window.onload=function(){
+  const saved=localStorage.getItem('pi_education');
+  if(saved){
+    const d=JSON.parse(saved);
+    if(d.matric){setFields('m_',d.matric,['seatno','obt','total','grade','year']);}
+    if(d.inter){setFields('i_',d.inter,['seatno','obt','total','grade','year']);}
+    if(d.grad){
+      ['seatno','university','degree','cgpa','obt','total','year'].forEach(k=>{
+        const el=document.getElementById('g_'+k);
+        if(el&&d.grad[k])el.value=d.grad[k];
+      });
+    }
+    ['m','i','g'].forEach(p=>calcPct(p));
+  }
+};
+function setFields(prefix,obj,keys){keys.forEach(k=>{const el=document.getElementById(prefix+k);if(el&&obj[k])el.value=obj[k];});}
+</script>
+</body>
+</html>

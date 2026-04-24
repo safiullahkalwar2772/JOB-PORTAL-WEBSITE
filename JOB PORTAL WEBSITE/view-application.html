@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Application – PakJobs Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1a56db;--blue-light:#3b82f6;--green:#059669;--green-light:#10b981;--white:#ffffff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-600:#475569;--red:#ef4444;--gold:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#f0f4f8;min-height:100vh;}
+nav{background:var(--navy);padding:0 2rem;height:65px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);}
+.logo-text span{color:var(--green-light);}
+.nav-right a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;margin-left:1.5rem;}
+
+/* PROGRESS */
+.progress-bar{background:var(--white);border-bottom:1px solid #e2e8f0;padding:1rem 2rem;}
+.pb-inner{max-width:1000px;margin:0 auto;}
+.pb-steps{display:flex;align-items:center;}
+.pb-step{display:flex;align-items:center;flex:1;}
+.pb-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+.pb-dot.done{background:var(--green);color:var(--white);}
+.pb-dot.active{background:var(--blue);color:var(--white);box-shadow:0 0 0 4px rgba(26,86,219,0.2);}
+.pb-label{font-size:0.75rem;font-weight:600;margin-left:8px;white-space:nowrap;}
+.pb-label.done{color:var(--green);}
+.pb-label.active{color:var(--blue);}
+.pb-line{flex:1;height:2px;margin:0 8px;background:var(--green);}
+
+.main{max-width:1050px;margin:2rem auto;padding:0 1.5rem 5rem;}
+
+/* HERO BANNER */
+.app-banner{background:linear-gradient(135deg,var(--navy) 0%,#1e3a5f 100%);border-radius:20px;padding:2rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;border:1px solid rgba(255,255,255,0.1);box-shadow:0 8px 40px rgba(0,0,0,0.2);}
+.app-banner-left{display:flex;align-items:center;gap:1.2rem;}
+.app-avatar{width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.app-banner-name{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--white);}
+.app-banner-sub{font-size:0.85rem;color:rgba(255,255,255,0.55);margin-top:2px;}
+.app-banner-right{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.app-stat{text-align:center;}
+.app-stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--white);}
+.app-stat-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.45);}
+.status-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);color:var(--green-light);padding:0.35rem 0.9rem;border-radius:50px;font-size:0.8rem;font-weight:700;}
+
+/* SECTION CARDS */
+.view-section{background:var(--white);border-radius:16px;border:2px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,0.06);overflow:hidden;margin-bottom:1.5rem;}
+.vs-header{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;}
+.vs-header.blue{background:linear-gradient(135deg,#1a56db,#3b82f6);}
+.vs-header.green{background:linear-gradient(135deg,#059669,#10b981);}
+.vs-header.purple{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+.vs-header.teal{background:linear-gradient(135deg,#0891b2,#22d3ee);}
+.vs-header.orange{background:linear-gradient(135deg,#b45309,#f59e0b);}
+.vs-header.dark{background:linear-gradient(135deg,var(--navy),#1e3a5f);}
+.vs-header h2{font-size:1rem;font-weight:700;color:var(--white);display:flex;align-items:center;gap:8px;}
+.edit-link{color:rgba(255,255,255,0.8);font-size:0.8rem;text-decoration:none;background:rgba(255,255,255,0.15);padding:0.25rem 0.7rem;border-radius:6px;transition:background 0.2s;}
+.edit-link:hover{background:rgba(255,255,255,0.3);}
+.vs-body{padding:1.5rem;}
+
+/* TABLE LAYOUT */
+.info-table{width:100%;border-collapse:collapse;}
+.info-table tr{border-bottom:1px solid #f1f5f9;}
+.info-table tr:last-child{border-bottom:none;}
+.info-table td{padding:0.65rem 0.5rem;font-size:0.9rem;vertical-align:top;}
+.info-table td:first-child{color:#64748b;font-weight:600;width:40%;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.4px;}
+.info-table td:last-child{color:#111827;font-weight:500;}
+
+/* EDU GRID */
+.edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.edu-block{background:var(--gray-50);border:1.5px solid #e2e8f0;border-radius:12px;padding:1rem;}
+.edu-block-title{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.8rem;display:flex;align-items:center;gap:6px;}
+.edu-block-title.m{color:var(--blue);}
+.edu-block-title.i{color:var(--green);}
+.edu-block-title.g{color:#7c3aed;}
+.edu-row{display:flex;justify-content:space-between;font-size:0.82rem;padding:0.3rem 0;border-bottom:1px solid #f1f5f9;}
+.edu-row:last-child{border:none;}
+.edu-row span:first-child{color:#64748b;}
+.edu-row span:last-child{font-weight:600;color:#111827;}
+
+/* SKILLS */
+.skills-display{display:flex;flex-wrap:wrap;gap:0.6rem;}
+.skill-pill{background:var(--gray-50);border:1.5px solid #e2e8f0;border-radius:10px;padding:0.5rem 0.9rem;}
+.skill-pill-name{font-size:0.85rem;font-weight:600;color:#111827;margin-bottom:3px;}
+.skill-pill-meta{display:flex;gap:0.5rem;align-items:center;}
+.skill-level{font-size:0.72rem;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;}
+.level-beginner{background:rgba(245,158,11,0.1);color:#b45309;}
+.level-intermediate{background:rgba(26,86,219,0.1);color:var(--blue);}
+.level-advanced{background:rgba(5,150,105,0.1);color:var(--green);}
+.level-expert{background:rgba(124,58,237,0.1);color:#7c3aed;}
+.skill-exp-text{font-size:0.72rem;color:#94a3b8;}
+.no-data{text-align:center;padding:2rem;color:#94a3b8;font-size:0.9rem;}
+
+/* EXP TIMELINE */
+.exp-timeline{display:flex;flex-direction:column;gap:1rem;}
+.exp-entry{background:var(--gray-50);border:1.5px solid #e2e8f0;border-radius:12px;padding:1rem 1.2rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;}
+.exp-designation{font-size:1rem;font-weight:700;color:#111827;margin-bottom:3px;}
+.exp-org{font-size:0.85rem;color:var(--blue);font-weight:600;}
+.exp-field{font-size:0.8rem;color:#64748b;margin-top:4px;}
+.exp-dates{text-align:right;}
+.exp-duration{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:var(--navy);}
+.exp-dur-label{font-size:0.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;}
+.exp-period{font-size:0.78rem;color:#94a3b8;margin-top:4px;}
+.total-exp-bar{background:linear-gradient(135deg,var(--navy),#1e3a5f);border-radius:12px;padding:1rem 1.5rem;margin-top:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
+.teb-label{font-size:0.8rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;}
+.teb-value{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--white);}
+
+/* JOB APPLY SECTION */
+.apply-section{background:var(--white);border:2px solid var(--blue);border-radius:20px;box-shadow:0 8px 40px rgba(26,86,219,0.12);overflow:hidden;margin-bottom:1.5rem;}
+.apply-header{background:linear-gradient(135deg,var(--blue),var(--blue-light));padding:1.2rem 1.5rem;}
+.apply-header h2{font-size:1.1rem;font-weight:700;color:var(--white);display:flex;align-items:center;gap:8px;}
+.apply-header p{font-size:0.82rem;color:rgba(255,255,255,0.75);margin-top:3px;}
+.apply-body{padding:1.5rem;}
+.jobs-apply-list{display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.5rem;}
+.job-apply-row{background:var(--gray-50);border:1.5px solid #e2e8f0;border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:border-color 0.2s;}
+.job-apply-row:hover{border-color:rgba(26,86,219,0.3);}
+.job-apply-row.selected{border-color:var(--blue);background:rgba(26,86,219,0.03);}
+.jar-left{display:flex;align-items:center;gap:12px;}
+.jar-radio{width:20px;height:20px;accent-color:var(--blue);cursor:pointer;}
+.jar-title{font-size:0.95rem;font-weight:700;color:#111827;}
+.jar-org{font-size:0.8rem;color:#64748b;}
+.jar-badge{font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:50px;font-weight:600;background:rgba(5,150,105,0.1);color:var(--green);border:1px solid rgba(5,150,105,0.2);}
+.apply-btn-big{background:linear-gradient(135deg,var(--green),var(--green-light));color:var(--white);border:none;padding:0.9rem 2.5rem;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all 0.3s;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(5,150,105,0.3);}
+.apply-btn-big:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(5,150,105,0.4);}
+
+/* SUCCESS MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--white);border-radius:24px;padding:3rem 2.5rem;max-width:480px;width:90%;text-align:center;animation:modalIn 0.4s ease;}
+@keyframes modalIn{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-icon{font-size:4rem;margin-bottom:1.2rem;animation:bounce 0.5s ease 0.3s both;}
+@keyframes bounce{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--navy);margin-bottom:0.5rem;}
+.modal-msg{color:var(--gray-600);font-size:0.95rem;line-height:1.6;margin-bottom:2rem;}
+.modal-job-name{display:inline-block;background:rgba(26,86,219,0.08);color:var(--blue);padding:0.3rem 0.8rem;border-radius:8px;font-weight:700;font-size:0.95rem;margin:0.3rem 0 1rem;}
+.modal-actions{display:flex;gap:1rem;}
+.modal-btn{flex:1;padding:0.85rem 1.5rem;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;}
+.modal-btn-view{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);}
+.modal-btn-view:hover{box-shadow:0 4px 15px rgba(26,86,219,0.4);}
+.modal-btn-exit{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+.modal-btn-exit:hover{background:#e2e8f0;}
+
+/* ACTION ROW */
+.bottom-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;}
+.action-btn{padding:0.7rem 1.5rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.action-edit{background:var(--white);color:var(--blue);border:1.5px solid var(--blue);}
+.action-edit:hover{background:rgba(26,86,219,0.05);}
+.action-print{background:var(--white);color:#475569;border:1.5px solid #e2e8f0;}
+.action-print:hover{background:#f1f5f9;}
+
+@media(max-width:700px){.edu-grid{grid-template-columns:1fr;}.exp-entry{grid-template-columns:1fr;}.modal-actions{flex-direction:column;}.pb-label{display:none;}.app-banner-right{gap:1rem;}}
+@media print{nav,.progress-bar,.apply-section,.bottom-actions,.modal-overlay{display:none!important;}.view-section{box-shadow:none;border:1px solid #ccc;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🏛️</div>
+    <div class="logo-text">Pak<span>Jobs</span> Portal</div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="personal-info.html">Edit Application</a>
+  </div>
+</nav>
+
+<div class="progress-bar">
+  <div class="pb-inner">
+    <div class="pb-steps">
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Personal Info</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Education</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Skills</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Experience</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot active">5</div><span class="pb-label active">Review & Apply</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- BANNER -->
+  <div class="app-banner">
+    <div class="app-banner-left">
+      <div class="app-avatar">👤</div>
+      <div>
+        <div class="app-banner-name" id="bannerName">Applicant Name</div>
+        <div class="app-banner-sub" id="bannerCnic">CNIC: ─</div>
+        <div style="margin-top:8px"><span class="status-pill">● Application Complete</span></div>
+      </div>
+    </div>
+    <div class="app-banner-right">
+      <div class="app-stat"><div class="app-stat-num" id="bSkillCount">─</div><div class="app-stat-label">Skills</div></div>
+      <div class="app-stat"><div class="app-stat-num" id="bExpYears">─</div><div class="app-stat-label">Exp. Years</div></div>
+      <div class="app-stat"><div class="app-stat-num" id="bEducation">─</div><div class="app-stat-label">Qualification</div></div>
+    </div>
+  </div>
+
+  <!-- PERSONAL INFO -->
+  <div class="view-section">
+    <div class="vs-header blue">
+      <h2>👤 Personal Information</h2>
+      <a href="personal-info.html" class="edit-link">✏️ Edit</a>
+    </div>
+    <div class="vs-body">
+      <table class="info-table" id="personalTable">
+        <tr><td>Full Name</td><td id="v_fullName">─</td></tr>
+        <tr><td>Father's Name</td><td id="v_fatherName">─</td></tr>
+        <tr><td>CNIC Number</td><td id="v_cnic">─</td></tr>
+        <tr><td>Contact Number</td><td id="v_contactNo">─</td></tr>
+        <tr><td>Father's CNIC</td><td id="v_fatherCnic">─</td></tr>
+        <tr><td>Father's Contact</td><td id="v_fatherContact">─</td></tr>
+        <tr><td>Date of Birth</td><td id="v_dob">─</td></tr>
+        <tr><td>Gender</td><td id="v_gender">─</td></tr>
+        <tr><td>Postal Address</td><td id="v_address">─</td></tr>
+        <tr><td>Postal Code</td><td id="v_postalCode">─</td></tr>
+        <tr><td>City</td><td id="v_city">─</td></tr>
+        <tr><td>Domicile District</td><td id="v_domicile">─</td></tr>
+        <tr><td>Province</td><td id="v_province">─</td></tr>
+        <tr><td>Country</td><td id="v_country">─</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="view-section">
+    <div class="vs-header green">
+      <h2>🎓 Education Details</h2>
+      <a href="education.html" class="edit-link">✏️ Edit</a>
+    </div>
+    <div class="vs-body">
+      <div class="edu-grid" id="eduGrid">
+        <div class="no-data">No education data found.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="view-section">
+    <div class="vs-header purple">
+      <h2>⚡ Skills & Expertise</h2>
+      <a href="skills.html" class="edit-link">✏️ Edit</a>
+    </div>
+    <div class="vs-body">
+      <div class="skills-display" id="skillsDisplay">
+        <div class="no-data">No skills added.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="view-section">
+    <div class="vs-header teal">
+      <h2>💼 Work Experience</h2>
+      <a href="experience.html" class="edit-link">✏️ Edit</a>
+    </div>
+    <div class="vs-body">
+      <div class="exp-timeline" id="expTimeline">
+        <div class="no-data">No work experience added. (Fresh Graduate)</div>
+      </div>
+      <div class="total-exp-bar" id="totalExpBar" style="display:none">
+        <div><div class="teb-label">Total Experience</div><div class="teb-value" id="totalExpVal">0 Years</div></div>
+        <div style="text-align:right"><div class="teb-label">Total Months</div><div class="teb-value" id="totalMonthsVal">0</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLY FOR JOB -->
+  <div class="apply-section">
+    <div class="apply-header">
+      <h2>🚀 Apply for a Job</h2>
+      <p>Select a job posting below and submit your application</p>
+    </div>
+    <div class="apply-body">
+      <div class="jobs-apply-list" id="jobsApplyList">
+        <!-- populated by JS -->
+      </div>
+      <button class="apply-btn-big" onclick="submitApplication()">
+        <span>📨</span> Apply for Selected Job
+      </button>
+    </div>
+  </div>
+
+  <!-- BOTTOM ACTIONS -->
+  <div class="bottom-actions">
+    <a href="personal-info.html" class="action-btn action-edit">✏️ Edit Application</a>
+    <button class="action-btn action-print" onclick="window.print()">🖨️ Print Application</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <div class="modal-title">Application Submitted!</div>
+    <div class="modal-msg">
+      Congratulations! You have successfully applied for:
+      <div class="modal-job-name" id="appliedJobName">─</div>
+      Your application has been received and will be reviewed by the HR team. You will be notified via your registered contact number.
+    </div>
+    <div class="modal-actions">
+      <a href="view-application.html" class="modal-btn modal-btn-view">📋 View Application</a>
+      <button class="modal-btn modal-btn-exit" onclick="closeModal()">✕ Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const JOB_POSTS = [
+  {id:'job1',title:'Software Engineer',org:'PITB – Punjab IT Board',loc:'Lahore',salary:'PKR 80,000–120,000'},
+  {id:'job2',title:'Medical Officer',org:'Health Department Punjab',loc:'Multiple Cities',salary:'PKR 95,000+'},
+  {id:'job3',title:'Assistant Director',org:'Federal Public Service Commission',loc:'Islamabad',salary:'PKR 75,000–100,000'},
+  {id:'job4',title:'Lecturer (Computer Science)',org:'Higher Education Commission',loc:'Karachi',salary:'PKR 85,000+'},
+  {id:'job5',title:'Data Analyst',org:'National Database Authority (NADRA)',loc:'Islamabad',salary:'PKR 70,000–90,000'},
+  {id:'job6',title:'Civil Engineer',org:'NHA – National Highway Authority',loc:'Nationwide',salary:'PKR 90,000+'},
+  {id:'job7',title:'Finance Officer',org:'State Bank of Pakistan',loc:'Karachi',salary:'PKR 100,000+'},
+  {id:'job8',title:'Network Administrator',org:'PTA – Pakistan Telecommunication Authority',loc:'Islamabad',salary:'PKR 75,000+'},
+];
+
+let selectedJobId = null;
+
+function renderJobs(){
+  const preselected = localStorage.getItem('pi_selectedJob')||'';
+  document.getElementById('jobsApplyList').innerHTML = JOB_POSTS.map(job=>{
+    const sel = job.title===preselected||job.id===selectedJobId;
+    return `<div class="job-apply-row ${sel?'selected':''}" id="jrow_${job.id}" onclick="selectJob('${job.id}')">
+      <div class="jar-left">
+        <input type="radio" class="jar-radio" name="jobRadio" ${sel?'checked':''} onchange="selectJob('${job.id}')">
+        <div>
+          <div class="jar-title">${job.title}</div>
+          <div class="jar-org">${job.org} • 📍 ${job.loc}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-size:0.82rem;color:#475569">${job.salary}</span>
+        <span class="jar-badge">Open</span>
+      </div>
+    </div>`;
+  }).join('');
+  if(preselected){
+    const found=JOB_POSTS.find(j=>j.title===preselected);
+    if(found)selectedJobId=found.id;
+  }
+}
+
+function selectJob(id){
+  selectedJobId=id;
+  document.querySelectorAll('.job-apply-row').forEach(r=>r.classList.remove('selected'));
+  const row=document.getElementById('jrow_'+id);
+  if(row){row.classList.add('selected');row.querySelector('input[type=radio]').checked=true;}
+}
+
+function submitApplication(){
+  if(!selectedJobId){alert('Please select a job to apply for.');return;}
+  const job=JOB_POSTS.find(j=>j.id===selectedJobId);
+  document.getElementById('appliedJobName').textContent=job.title+' – '+job.org;
+  document.getElementById('modalOverlay').classList.add('show');
+  localStorage.setItem('pi_appliedJob',JSON.stringify(job));
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// Load data
+function loadPersonal(){
+  const d=JSON.parse(localStorage.getItem('pi_personalInfo')||'{}');
+  const fields=['fullName','fatherName','cnic','contactNo','fatherCnic','fatherContact','dob','gender','address','postalCode','city','domicile','province','country'];
+  fields.forEach(f=>{
+    const el=document.getElementById('v_'+f);
+    if(el&&d[f])el.textContent=d[f];
+  });
+  if(d.fullName){document.getElementById('bannerName').textContent=d.fullName;}
+  if(d.cnic){document.getElementById('bannerCnic').textContent='CNIC: '+d.cnic;}
+}
+
+function loadEducation(){
+  const d=JSON.parse(localStorage.getItem('pi_education')||'{}');
+  if(!d.matric&&!d.inter&&!d.grad)return;
+  const grid=document.getElementById('eduGrid');
+  let html='';
+  if(d.matric){html+=`<div class="edu-block"><div class="edu-block-title m">🏫 Matric (SSC)</div>
+    <div class="edu-row"><span>Seat No</span><span>${d.matric.seatno||'─'}</span></div>
+    <div class="edu-row"><span>Marks</span><span>${d.matric.obt||'─'} / ${d.matric.total||'─'}</span></div>
+    <div class="edu-row"><span>Percentage</span><span>${d.matric.pct||'─'}</span></div>
+    <div class="edu-row"><span>Grade</span><span>${d.matric.grade||'─'}</span></div>
+    <div class="edu-row"><span>Year</span><span>${d.matric.year||'─'}</span></div>
+  </div>`;}
+  if(d.inter){html+=`<div class="edu-block"><div class="edu-block-title i">🎓 Intermediate</div>
+    <div class="edu-row"><span>Seat No</span><span>${d.inter.seatno||'─'}</span></div>
+    <div class="edu-row"><span>Marks</span><span>${d.inter.obt||'─'} / ${d.inter.total||'─'}</span></div>
+    <div class="edu-row"><span>Percentage</span><span>${d.inter.pct||'─'}</span></div>
+    <div class="edu-row"><span>Grade</span><span>${d.inter.grade||'─'}</span></div>
+    <div class="edu-row"><span>Year</span><span>${d.inter.year||'─'}</span></div>
+  </div>`;}
+  if(d.grad){html+=`<div class="edu-block"><div class="edu-block-title g">🏛️ Graduation</div>
+    <div class="edu-row"><span>Roll No</span><span>${d.grad.seatno||'─'}</span></div>
+    <div class="edu-row"><span>University</span><span>${d.grad.university||'─'}</span></div>
+    <div class="edu-row"><span>Degree</span><span>${d.grad.degree||'─'}</span></div>
+    <div class="edu-row"><span>CGPA</span><span>${d.grad.cgpa||'─'}</span></div>
+    ${d.grad.obt?`<div class="edu-row"><span>Marks</span><span>${d.grad.obt} / ${d.grad.total}</span></div>`:''}
+    ${d.grad.pct&&d.grad.pct!=='—'?`<div class="edu-row"><span>Percentage</span><span>${d.grad.pct}</span></div>`:''}
+    <div class="edu-row"><span>Year</span><span>${d.grad.year||'─'}</span></div>
+  </div>`;}
+  grid.innerHTML=html;
+  if(d.grad&&d.grad.degree)document.getElementById('bEducation').textContent=d.grad.degree.split(' ').slice(0,2).join(' ');
+}
+
+function loadSkills(){
+  const d=JSON.parse(localStorage.getItem('pi_skills')||'{}');
+  const keys=Object.keys(d);
+  if(!keys.length)return;
+  document.getElementById('bSkillCount').textContent=keys.length;
+  const LEVEL_CLASS={Beginner:'level-beginner',Intermediate:'level-intermediate',Advanced:'level-advanced',Expert:'level-expert'};
+  document.getElementById('skillsDisplay').innerHTML=keys.map(name=>{
+    const s=d[name];
+    const lc=LEVEL_CLASS[s.proficiency]||'level-beginner';
+    return `<div class="skill-pill">
+      <div class="skill-pill-name">${name}</div>
+      <div class="skill-pill-meta">
+        ${s.proficiency?`<span class="skill-level ${lc}">${s.proficiency}</span>`:''}
+        ${s.exp?`<span class="skill-exp-text">${s.exp}yr exp</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function loadExperience(){
+  const arr=JSON.parse(localStorage.getItem('pi_experience')||'[]');
+  if(!arr.length)return;
+  let totalM=0;
+  arr.forEach(e=>{totalM+=parseInt(e.expMonths||0);});
+  const timeline=document.getElementById('expTimeline');
+  timeline.innerHTML=arr.map(e=>`<div class="exp-entry">
+    <div>
+      <div class="exp-designation">${e.designation||'─'}</div>
+      <div class="exp-org">${e.organization||'─'}</div>
+      <div class="exp-field">${e.field||''} ${e.empType?'• '+e.empType:''}</div>
+      ${e.responsibilities?`<div style="font-size:0.82rem;color:#64748b;margin-top:6px">${e.responsibilities}</div>`:''}
+    </div>
+    <div class="exp-dates">
+      <div class="exp-duration">${e.expYears||0} <span style="font-size:0.85rem;font-weight:500">yrs</span></div>
+      <div class="exp-dur-label">Duration</div>
+      <div class="exp-period">${e.fromDate||'─'} → ${e.toDate||'Present'}</div>
+      <div style="font-size:0.75rem;color:#94a3b8;margin-top:2px">${e.expMonths||0} months</div>
+    </div>
+  </div>`).join('');
+  document.getElementById('totalExpBar').style.display='flex';
+  document.getElementById('totalExpVal').textContent=(totalM/12).toFixed(1)+' Years';
+  document.getElementById('totalMonthsVal').textContent=totalM+' Months';
+  document.getElementById('bExpYears').textContent=(totalM/12).toFixed(1);
+}
+
+window.onload=function(){
+  loadPersonal();
+  loadEducation();
+  loadSkills();
+  loadExperience();
+  renderJobs();
+};
+</script>
+</body>
+</html>

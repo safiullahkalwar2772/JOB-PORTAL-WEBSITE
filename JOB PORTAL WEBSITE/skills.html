@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills – PakJobs Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1a56db;--blue-light:#3b82f6;--green:#059669;--green-light:#10b981;--white:#ffffff;--gray-200:#e2e8f0;--gray-600:#475569;--red:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#f0f4f8;min-height:100vh;}
+nav{background:var(--navy);padding:0 2rem;height:65px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);}
+.logo-text span{color:var(--green-light);}
+.nav-right a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;margin-left:1.5rem;}
+.progress-bar{background:var(--white);border-bottom:1px solid #e2e8f0;padding:1rem 2rem;}
+.pb-inner{max-width:1100px;margin:0 auto;}
+.pb-steps{display:flex;align-items:center;}
+.pb-step{display:flex;align-items:center;flex:1;}
+.pb-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+.pb-dot.active{background:var(--blue);color:var(--white);box-shadow:0 0 0 4px rgba(26,86,219,0.2);}
+.pb-dot.done{background:var(--green);color:var(--white);}
+.pb-dot.pending{background:#e2e8f0;color:#94a3b8;}
+.pb-label{font-size:0.75rem;font-weight:600;color:#64748b;margin-left:8px;white-space:nowrap;}
+.pb-label.active{color:var(--blue);}
+.pb-label.done{color:var(--green);}
+.pb-line{flex:1;height:2px;background:#e2e8f0;margin:0 8px;}
+.pb-line.done{background:var(--green);}
+.main{max-width:1100px;margin:2rem auto;padding:0 1.5rem 4rem;}
+.page-header{margin-bottom:1.5rem;}
+.page-header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--navy);margin-bottom:0.3rem;}
+.page-header p{color:var(--gray-600);font-size:0.95rem;}
+
+/* SKILL SELECTOR */
+.skills-toolbar{background:var(--white);border:1px solid #e2e8f0;border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+.search-box{flex:1;min-width:200px;border:1.5px solid #d1d5db;border-radius:9px;padding:0.6rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.92rem;outline:none;}
+.search-box:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,0.1);}
+.cat-btns{display:flex;gap:0.5rem;flex-wrap:wrap;}
+.cat-btn{padding:0.35rem 0.9rem;border-radius:50px;border:1.5px solid #d1d5db;background:var(--white);font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;color:#64748b;cursor:pointer;transition:all 0.2s;}
+.cat-btn.active{background:var(--blue);color:var(--white);border-color:var(--blue);}
+.cat-btn:hover:not(.active){border-color:var(--blue);color:var(--blue);}
+
+/* SKILL GRID */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.skill-chip{background:var(--white);border:1.5px solid #e2e8f0;border-radius:12px;padding:1rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.skill-chip:hover{border-color:var(--blue-light);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+.skill-chip.selected{border-color:var(--green);background:linear-gradient(135deg,rgba(5,150,105,0.04),rgba(16,185,129,0.04));}
+.skill-chip.selected::before{content:'✓';position:absolute;top:8px;right:10px;font-size:0.8rem;color:var(--green);font-weight:700;}
+.skill-name{font-size:0.92rem;font-weight:600;color:#111827;margin-bottom:0.6rem;}
+.skill-cat-badge{display:inline-block;font-size:0.7rem;color:#64748b;background:#f1f5f9;padding:0.15rem 0.5rem;border-radius:4px;margin-bottom:0.7rem;}
+.skill-controls{display:none;flex-direction:column;gap:0.6rem;}
+.skill-chip.selected .skill-controls{display:flex;}
+label.mini{font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.4px;}
+select.mini,input.mini{border:1.5px solid #d1d5db;border-radius:7px;padding:0.4rem 0.7rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:#111827;background:#fafafa;outline:none;width:100%;}
+select.mini:focus,input.mini:focus{border-color:var(--blue);}
+
+/* ADDED SKILLS SUMMARY */
+.added-summary{background:var(--white);border:1px solid #e2e8f0;border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+.added-summary h3{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.added-tags{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.added-tag{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.8rem;font-weight:600;background:linear-gradient(135deg,rgba(26,86,219,0.1),rgba(59,130,246,0.1));color:var(--blue);border:1px solid rgba(26,86,219,0.2);}
+
+.card-actions{background:var(--white);border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+.form-actions{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 1.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;}
+.btn{padding:0.7rem 1.8rem;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;}
+.btn-next{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,86,219,0.4);}
+.btn-back{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+.btn-back:hover{background:#e2e8f0;}
+@media(max-width:650px){.skills-grid{grid-template-columns:1fr;}.pb-label{display:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🏛️</div>
+    <div class="logo-text">Pak<span>Jobs</span> Portal</div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="view-application.html">View Application</a>
+  </div>
+</nav>
+
+<div class="progress-bar">
+  <div class="pb-inner">
+    <div class="pb-steps">
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Personal Info</span></div>
+      <div class="pb-line done"></div>
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Education</span></div>
+      <div class="pb-line done"></div>
+      <div class="pb-step"><div class="pb-dot active">3</div><span class="pb-label active">Skills</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot pending">4</div><span class="pb-label">Experience</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot pending">5</div><span class="pb-label">Review</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1>Skills & Expertise</h1>
+    <p>Select your skills, set proficiency level, and enter years of experience. Click a skill to select it.</p>
+  </div>
+
+  <div class="skills-toolbar">
+    <input type="text" class="search-box" id="skillSearch" placeholder="🔍 Search skills..." oninput="filterSkills()">
+    <div class="cat-btns" id="catBtns"></div>
+  </div>
+
+  <div class="added-summary" id="summaryBox" style="display:none">
+    <h3>✅ Selected Skills (<span id="skillCount">0</span>)</h3>
+    <div class="added-tags" id="addedTags"></div>
+  </div>
+
+  <div class="skills-grid" id="skillsGrid"></div>
+
+  <div class="card-actions">
+    <div class="form-actions">
+      <a href="education.html" class="btn btn-back">← Back</a>
+      <button class="btn btn-next" onclick="saveAndNext()">Next: Experience →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_SKILLS = [
+  // IT & Computer Science
+  {name:'Python Programming',cat:'IT & CS'},{name:'JavaScript',cat:'IT & CS'},{name:'Java Development',cat:'IT & CS'},{name:'C++ Programming',cat:'IT & CS'},{name:'PHP & Laravel',cat:'IT & CS'},{name:'React.js',cat:'IT & CS'},{name:'Node.js',cat:'IT & CS'},{name:'SQL Database',cat:'IT & CS'},{name:'MongoDB',cat:'IT & CS'},{name:'Machine Learning',cat:'IT & CS'},{name:'Data Science',cat:'IT & CS'},{name:'Cybersecurity',cat:'IT & CS'},{name:'Network Administration',cat:'IT & CS'},{name:'Cloud Computing (AWS)',cat:'IT & CS'},{name:'DevOps & CI/CD',cat:'IT & CS'},
+  // Engineering
+  {name:'AutoCAD Design',cat:'Engineering'},{name:'Civil Engineering',cat:'Engineering'},{name:'Electrical Engineering',cat:'Engineering'},{name:'Mechanical Engineering',cat:'Engineering'},{name:'Structural Analysis',cat:'Engineering'},{name:'Project Management',cat:'Engineering'},{name:'MATLAB',cat:'Engineering'},{name:'Circuit Design',cat:'Engineering'},
+  // Medical & Health
+  {name:'Patient Assessment',cat:'Medical'},{name:'Clinical Research',cat:'Medical'},{name:'Pharmacology',cat:'Medical'},{name:'Lab Techniques',cat:'Medical'},{name:'First Aid & CPR',cat:'Medical'},{name:'Medical Billing',cat:'Medical'},
+  // Business & Finance
+  {name:'MS Excel (Advanced)',cat:'Business'},{name:'Accounting & Bookkeeping',cat:'Business'},{name:'Financial Analysis',cat:'Business'},{name:'Business Analysis',cat:'Business'},{name:'Human Resources',cat:'Business'},{name:'Marketing & Branding',cat:'Business'},{name:'Supply Chain Management',cat:'Business'},{name:'Business Communication',cat:'Business'},
+  // Languages
+  {name:'English (Written)',cat:'Languages'},{name:'English (Spoken)',cat:'Languages'},{name:'Urdu Typing',cat:'Languages'},{name:'Arabic Language',cat:'Languages'},{name:'Report Writing',cat:'Languages'},
+  // Administration
+  {name:'Office Administration',cat:'Administration'},{name:'Data Entry',cat:'Administration'},{name:'MS Office Suite',cat:'Administration'},{name:'Record Management',cat:'Administration'},{name:'Policy Development',cat:'Administration'},
+  // Research & Education
+  {name:'Research & Analysis',cat:'Research'},{name:'Academic Writing',cat:'Research'},{name:'Curriculum Development',cat:'Research'},{name:'Statistical Analysis',cat:'Research'},{name:'SPSS / STATA',cat:'Research'},
+  // Soft Skills
+  {name:'Leadership',cat:'Soft Skills'},{name:'Teamwork',cat:'Soft Skills'},{name:'Problem Solving',cat:'Soft Skills'},{name:'Time Management',cat:'Soft Skills'},{name:'Public Speaking',cat:'Soft Skills'},
+];
+
+const CATEGORIES = ['All', ...new Set(ALL_SKILLS.map(s=>s.cat))];
+let selectedCat = 'All';
+let selectedSkills = {}; // {name: {proficiency, exp}}
+
+// Build category buttons
+const catBtns = document.getElementById('catBtns');
+CATEGORIES.forEach(cat=>{
+  const btn = document.createElement('button');
+  btn.className = 'cat-btn'+(cat==='All'?' active':'');
+  btn.textContent = cat;
+  btn.onclick = ()=>{ selectedCat=cat; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderSkills(); };
+  catBtns.appendChild(btn);
+});
+
+function filterSkills(){renderSkills();}
+
+function renderSkills(){
+  const q = document.getElementById('skillSearch').value.toLowerCase();
+  const grid = document.getElementById('skillsGrid');
+  grid.innerHTML='';
+  ALL_SKILLS.filter(s=>{
+    const matchCat = selectedCat==='All'||s.cat===selectedCat;
+    const matchQ = !q || s.name.toLowerCase().includes(q) || s.cat.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  }).forEach(skill=>{
+    const sel = !!selectedSkills[skill.name];
+    const div = document.createElement('div');
+    div.className='skill-chip'+(sel?' selected':'');
+    div.innerHTML=`
+      <div class="skill-cat-badge">${skill.cat}</div>
+      <div class="skill-name">${skill.name}</div>
+      <div class="skill-controls">
+        <div>
+          <label class="mini">Proficiency Level</label>
+          <select class="mini" data-skill="${skill.name}" data-field="proficiency" onchange="updateSkill(this)">
+            <option value="">Select Level</option>
+            <option ${sel&&selectedSkills[skill.name].proficiency==='Beginner'?'selected':''}>Beginner</option>
+            <option ${sel&&selectedSkills[skill.name].proficiency==='Intermediate'?'selected':''}>Intermediate</option>
+            <option ${sel&&selectedSkills[skill.name].proficiency==='Advanced'?'selected':''}>Advanced</option>
+            <option ${sel&&selectedSkills[skill.name].proficiency==='Expert'?'selected':''}>Expert</option>
+          </select>
+        </div>
+        <div>
+          <label class="mini">Experience (Years)</label>
+          <input class="mini" type="number" min="0" max="50" placeholder="e.g. 2" data-skill="${skill.name}" data-field="exp" value="${sel?selectedSkills[skill.name].exp||'':''}" oninput="updateSkill(this)">
+        </div>
+      </div>`;
+    div.addEventListener('click',e=>{
+      if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT'||e.target.tagName==='OPTION')return;
+      toggleSkill(skill.name, div);
+    });
+    grid.appendChild(div);
+  });
+}
+
+function toggleSkill(name, div){
+  if(selectedSkills[name]){
+    delete selectedSkills[name];
+    div.classList.remove('selected');
+  } else {
+    selectedSkills[name]={proficiency:'',exp:''};
+    div.classList.add('selected');
+  }
+  updateSummary();
+}
+
+function updateSkill(el){
+  const name=el.dataset.skill;
+  const field=el.dataset.field;
+  if(selectedSkills[name])selectedSkills[name][field]=el.value;
+}
+
+function updateSummary(){
+  const keys=Object.keys(selectedSkills);
+  const box=document.getElementById('summaryBox');
+  document.getElementById('skillCount').textContent=keys.length;
+  document.getElementById('addedTags').innerHTML=keys.map(k=>`<span class="added-tag">${k}</span>`).join('');
+  box.style.display=keys.length>0?'block':'none';
+}
+
+function saveAndNext(){
+  if(Object.keys(selectedSkills).length===0){alert('Please select at least one skill.');return;}
+  localStorage.setItem('pi_skills',JSON.stringify(selectedSkills));
+  window.location.href='experience.html';
+}
+
+// Init
+renderSkills();
+const saved=localStorage.getItem('pi_skills');
+if(saved){selectedSkills=JSON.parse(saved);renderSkills();updateSummary();}
+</script>
+</body>
+</html>

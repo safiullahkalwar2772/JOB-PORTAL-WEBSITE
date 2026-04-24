@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Information – PakJobs Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1a56db;--blue-light:#3b82f6;--green:#059669;--green-light:#10b981;--white:#ffffff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-600:#475569;--red:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#f0f4f8;min-height:100vh;}
+
+/* NAV */
+nav{background:var(--navy);padding:0 2rem;height:65px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);}
+.logo-text span{color:var(--green-light);}
+.nav-right a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;margin-left:1.5rem;}
+.nav-right a:hover{color:white;}
+
+/* PROGRESS BAR */
+.progress-bar{background:var(--white);border-bottom:1px solid #e2e8f0;padding:1rem 2rem;}
+.pb-inner{max-width:1000px;margin:0 auto;}
+.pb-steps{display:flex;align-items:center;gap:0;}
+.pb-step{display:flex;align-items:center;flex:1;}
+.pb-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;transition:all 0.3s;}
+.pb-dot.active{background:var(--blue);color:var(--white);box-shadow:0 0 0 4px rgba(26,86,219,0.2);}
+.pb-dot.done{background:var(--green);color:var(--white);}
+.pb-dot.pending{background:#e2e8f0;color:#94a3b8;}
+.pb-label{font-size:0.75rem;font-weight:600;color:#64748b;margin-left:8px;white-space:nowrap;}
+.pb-label.active{color:var(--blue);}
+.pb-line{flex:1;height:2px;background:#e2e8f0;margin:0 8px;}
+.pb-line.done{background:var(--green);}
+
+/* MAIN */
+.main{max-width:1000px;margin:2rem auto;padding:0 1.5rem 4rem;}
+.page-header{margin-bottom:2rem;}
+.page-header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--navy);margin-bottom:0.3rem;}
+.page-header p{color:var(--gray-600);font-size:0.95rem;}
+
+/* CARD */
+.card{background:var(--white);border-radius:16px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,0.06);overflow:hidden;margin-bottom:1.5rem;}
+.card-header{background:linear-gradient(135deg,var(--navy),#1e3a5f);padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;}
+.card-header .ch-icon{font-size:1.3rem;}
+.card-header h2{font-size:1rem;font-weight:700;color:var(--white);}
+.card-body{padding:1.5rem;}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:0.82rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;}
+label .req{color:var(--red);margin-left:2px;}
+input,select,textarea{border:1.5px solid #d1d5db;border-radius:9px;padding:0.65rem 0.9rem;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:#111827;background:#fafafa;transition:all 0.2s;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,0.1);}
+input::placeholder{color:#9ca3af;}
+select{cursor:pointer;}
+
+/* ACTIONS */
+.form-actions{display:flex;justify-content:flex-end;gap:1rem;padding:1.2rem 1.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;}
+.btn{padding:0.7rem 1.8rem;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-next{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,86,219,0.4);}
+.btn-back{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+.btn-back:hover{background:#e2e8f0;}
+
+/* REQUIRED NOTE */
+.req-note{font-size:0.82rem;color:#94a3b8;margin-bottom:1rem;}
+.req-note span{color:var(--red);}
+
+@media(max-width:650px){
+  .form-grid,.form-grid.three{grid-template-columns:1fr;}
+  .pb-label{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🏛️</div>
+    <div class="logo-text">Pak<span>Jobs</span> Portal</div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="view-application.html">View Application</a>
+  </div>
+</nav>
+
+<div class="progress-bar">
+  <div class="pb-inner">
+    <div class="pb-steps">
+      <div class="pb-step">
+        <div class="pb-dot active">1</div>
+        <span class="pb-label active">Personal Info</span>
+      </div>
+      <div class="pb-line"></div>
+      <div class="pb-step">
+        <div class="pb-dot pending">2</div>
+        <span class="pb-label">Education</span>
+      </div>
+      <div class="pb-line"></div>
+      <div class="pb-step">
+        <div class="pb-dot pending">3</div>
+        <span class="pb-label">Skills</span>
+      </div>
+      <div class="pb-line"></div>
+      <div class="pb-step">
+        <div class="pb-dot pending">4</div>
+        <span class="pb-label">Experience</span>
+      </div>
+      <div class="pb-line"></div>
+      <div class="pb-step">
+        <div class="pb-dot pending">5</div>
+        <span class="pb-label">Review</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1>Personal Information</h1>
+    <p>Please fill in your personal details accurately. All information will be verified.</p>
+  </div>
+  <p class="req-note"><span>*</span> Fields marked with asterisk are mandatory</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="ch-icon">👤</div>
+      <h2>Applicant Details</h2>
+    </div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="fullName" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Father's Name <span class="req">*</span></label>
+          <input type="text" id="fatherName" placeholder="Enter father's name" required>
+        </div>
+        <div class="form-group">
+          <label>CNIC Number <span class="req">*</span></label>
+          <input type="text" id="cnic" placeholder="XXXXX-XXXXXXX-X" maxlength="15" required>
+        </div>
+        <div class="form-group">
+          <label>Contact Number <span class="req">*</span></label>
+          <input type="tel" id="contactNo" placeholder="03XX-XXXXXXX" required>
+        </div>
+        <div class="form-group">
+          <label>Father's CNIC <span class="req">*</span></label>
+          <input type="text" id="fatherCnic" placeholder="XXXXX-XXXXXXX-X" maxlength="15" required>
+        </div>
+        <div class="form-group">
+          <label>Father's Contact No</label>
+          <input type="tel" id="fatherContact" placeholder="03XX-XXXXXXX">
+        </div>
+        <div class="form-group">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob" required>
+        </div>
+        <div class="form-group">
+          <label>Gender <span class="req">*</span></label>
+          <select id="gender" required>
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="ch-icon">📍</div>
+      <h2>Address & Domicile</h2>
+    </div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Postal Address <span class="req">*</span></label>
+          <textarea id="address" rows="2" placeholder="Enter complete postal address" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Postal Code <span class="req">*</span></label>
+          <input type="text" id="postalCode" placeholder="e.g. 75500" maxlength="10" required>
+        </div>
+        <div class="form-group">
+          <label>City <span class="req">*</span></label>
+          <input type="text" id="city" placeholder="Enter city name" required>
+        </div>
+        <div class="form-group">
+          <label>Domicile District <span class="req">*</span></label>
+          <select id="domicile" required>
+            <option value="">Select District</option>
+            <option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Hyderabad</option><option>Sialkot</option><option>Gujranwala</option><option>Bahawalpur</option><option>Sukkur</option><option>Larkana</option><option>Mirpur AJK</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Province <span class="req">*</span></label>
+          <select id="province" required>
+            <option value="">Select Province</option>
+            <option>Punjab</option>
+            <option>Sindh</option>
+            <option>KPK (Khyber Pakhtunkhwa)</option>
+            <option>Balochistan</option>
+            <option>Islamabad (Federal)</option>
+            <option>AJK (Azad Jammu & Kashmir)</option>
+            <option>Gilgit-Baltistan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Country <span class="req">*</span></label>
+          <input type="text" id="country" value="Pakistan" required>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="form-actions">
+      <a href="index.html" class="btn btn-back">← Back to Home</a>
+      <button class="btn btn-next" onclick="saveAndNext()">Next: Education →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Auto-format CNIC
+document.getElementById('cnic').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'');
+  if(v.length>5)v=v.slice(0,5)+'-'+v.slice(5);
+  if(v.length>13)v=v.slice(0,13)+'-'+v.slice(13);
+  this.value=v.slice(0,15);
+});
+document.getElementById('fatherCnic').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'');
+  if(v.length>5)v=v.slice(0,5)+'-'+v.slice(5);
+  if(v.length>13)v=v.slice(0,13)+'-'+v.slice(13);
+  this.value=v.slice(0,15);
+});
+
+function saveAndNext(){
+  const fields=['fullName','fatherName','cnic','contactNo','fatherCnic','dob','gender','address','postalCode','city','domicile','province','country'];
+  const data={};
+  let valid=true;
+  fields.forEach(f=>{
+    const el=document.getElementById(f);
+    if(el){
+      data[f]=el.value;
+      if(el.hasAttribute('required')&&!el.value.trim()){
+        el.style.borderColor='#ef4444';valid=false;
+      } else {el.style.borderColor='';}
+    }
+  });
+  if(!valid){alert('Please fill in all required fields.');return;}
+  localStorage.setItem('pi_personalInfo',JSON.stringify(data));
+  window.location.href='education.html';
+}
+
+// Pre-fill if exists
+window.onload=function(){
+  const saved=localStorage.getItem('pi_personalInfo');
+  if(saved){
+    const d=JSON.parse(saved);
+    Object.keys(d).forEach(k=>{
+      const el=document.getElementById(k);
+      if(el)el.value=d[k];
+    });
+  }
+  // Get job from URL
+  const params=new URLSearchParams(window.location.search);
+  const job=params.get('job');
+  if(job)localStorage.setItem('pi_selectedJob',job);
+};
+</script>
+</body>
+</html>

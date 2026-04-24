@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience – PakJobs Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1a56db;--blue-light:#3b82f6;--green:#059669;--green-light:#10b981;--white:#ffffff;--gray-200:#e2e8f0;--gray-600:#475569;--red:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#f0f4f8;min-height:100vh;}
+nav{background:var(--navy);padding:0 2rem;height:65px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);}
+.logo-text span{color:var(--green-light);}
+.nav-right a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;margin-left:1.5rem;}
+.progress-bar{background:var(--white);border-bottom:1px solid #e2e8f0;padding:1rem 2rem;}
+.pb-inner{max-width:1000px;margin:0 auto;}
+.pb-steps{display:flex;align-items:center;}
+.pb-step{display:flex;align-items:center;flex:1;}
+.pb-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+.pb-dot.active{background:var(--blue);color:var(--white);box-shadow:0 0 0 4px rgba(26,86,219,0.2);}
+.pb-dot.done{background:var(--green);color:var(--white);}
+.pb-dot.pending{background:#e2e8f0;color:#94a3b8;}
+.pb-label{font-size:0.75rem;font-weight:600;color:#64748b;margin-left:8px;white-space:nowrap;}
+.pb-label.active{color:var(--blue);}
+.pb-label.done{color:var(--green);}
+.pb-line{flex:1;height:2px;background:#e2e8f0;margin:0 8px;}
+.pb-line.done{background:var(--green);}
+.main{max-width:1000px;margin:2rem auto;padding:0 1.5rem 4rem;}
+.page-header{margin-bottom:1.5rem;}
+.page-header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--navy);margin-bottom:0.3rem;}
+.page-header p{color:var(--gray-600);font-size:0.95rem;}
+
+/* EXP ENTRIES */
+.exp-list{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:1.5rem;}
+.exp-card{background:var(--white);border:1.5px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:border-color 0.2s;}
+.exp-card:hover{border-color:rgba(26,86,219,0.25);}
+.exp-card-header{background:linear-gradient(135deg,var(--navy),#1e3a5f);padding:0.85rem 1.3rem;display:flex;align-items:center;justify-content:space-between;}
+.exp-card-header h3{font-size:0.95rem;font-weight:600;color:var(--white);}
+.del-btn{background:rgba(239,68,68,0.15);color:#fca5a5;border:none;border-radius:6px;padding:0.25rem 0.7rem;cursor:pointer;font-size:0.8rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.del-btn:hover{background:rgba(239,68,68,0.3);}
+.exp-body{padding:1.3rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:0.8rem;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;}
+label .req{color:var(--red);}
+input,select,textarea{border:1.5px solid #d1d5db;border-radius:9px;padding:0.6rem 0.85rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#111827;background:#fafafa;transition:all 0.2s;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,0.1);}
+input::placeholder,textarea::placeholder{color:#9ca3af;}
+
+/* ADD BTN */
+.add-exp-btn{background:var(--white);border:2px dashed #94a3b8;border-radius:14px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;color:#64748b;font-size:0.95rem;font-weight:600;font-family:'DM Sans',sans-serif;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.5rem;}
+.add-exp-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(26,86,219,0.03);}
+.add-exp-btn span{font-size:1.3rem;}
+
+/* TOTAL EXP SUMMARY */
+.total-box{background:linear-gradient(135deg,var(--navy),#1e3a5f);border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.total-box h3{color:rgba(255,255,255,0.7);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.3rem;}
+.total-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--white);}
+.total-sub{font-size:0.8rem;color:rgba(255,255,255,0.5);}
+.total-entries{display:flex;gap:2rem;}
+.te-item{text-align:center;}
+
+.card-actions{background:var(--white);border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+.form-actions{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 1.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;}
+.btn{padding:0.7rem 1.8rem;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;}
+.btn-next{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,86,219,0.4);}
+.btn-back{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+.btn-back:hover{background:#e2e8f0;}
+.fresh-note{background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.3);border-radius:12px;padding:0.8rem 1rem;margin-bottom:1.5rem;font-size:0.88rem;color:#92400e;display:flex;align-items:center;gap:8px;}
+@media(max-width:650px){.form-grid,.form-grid.three{grid-template-columns:1fr;}.pb-label{display:none;}.total-entries{gap:1rem;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🏛️</div>
+    <div class="logo-text">Pak<span>Jobs</span> Portal</div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="view-application.html">View Application</a>
+  </div>
+</nav>
+
+<div class="progress-bar">
+  <div class="pb-inner">
+    <div class="pb-steps">
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Personal Info</span></div>
+      <div class="pb-line done"></div>
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Education</span></div>
+      <div class="pb-line done"></div>
+      <div class="pb-step"><div class="pb-dot done">✓</div><span class="pb-label done">Skills</span></div>
+      <div class="pb-line done"></div>
+      <div class="pb-step"><div class="pb-dot active">4</div><span class="pb-label active">Experience</span></div>
+      <div class="pb-line"></div>
+      <div class="pb-step"><div class="pb-dot pending">5</div><span class="pb-label">Review</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1>Work Experience</h1>
+    <p>Add your relevant professional experience. Fresh graduates may skip this section.</p>
+  </div>
+
+  <div class="fresh-note">⚠️ If you are a fresh graduate with no experience, click "Next" to continue.</div>
+
+  <div class="total-box" id="totalBox">
+    <div>
+      <h3>Total Experience</h3>
+      <div class="total-num" id="totalYears">0 Years</div>
+      <div class="total-sub" id="totalMonths">0 Months Total</div>
+    </div>
+    <div class="total-entries">
+      <div class="te-item">
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:white" id="entryCount">0</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px">Positions</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-list" id="expList"></div>
+
+  <button class="add-exp-btn" onclick="addEntry()">
+    <span>➕</span> Add Work Experience
+  </button>
+
+  <div class="card-actions">
+    <div class="form-actions">
+      <a href="skills.html" class="btn btn-back">← Back</a>
+      <button class="btn btn-next" onclick="saveAndNext()">Next: Review →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let entries = [];
+let idCount = 0;
+
+const FIELDS_OPTIONS = {
+  field: ['Information Technology (IT)','Computer Science (CS)','Software Engineering','Data Science / AI','Cybersecurity','Networking','Electronics','Electrical Engineering','Civil Engineering','Mechanical Engineering','Medical / Healthcare','Pharmacy','Education / Teaching','Research','Finance / Accounting','Banking','Human Resources','Administration','Marketing','Sales','Supply Chain','Public Service / Government','Law / Legal','Journalism / Media','Other']
+};
+
+function addEntry(data=null){
+  idCount++;
+  const id='exp_'+idCount;
+  entries.push({id, data:data||{}});
+  renderList();
+  updateTotal();
+}
+
+function deleteEntry(id){
+  entries=entries.filter(e=>e.id!==id);
+  renderList();
+  updateTotal();
+}
+
+function renderList(){
+  const list=document.getElementById('expList');
+  list.innerHTML='';
+  entries.forEach((entry,idx)=>{
+    const d=entry.data;
+    const div=document.createElement('div');
+    div.className='exp-card';
+    div.innerHTML=`
+      <div class="exp-card-header">
+        <h3>💼 Experience Entry #${idx+1}</h3>
+        <button class="del-btn" onclick="deleteEntry('${entry.id}')">✕ Remove</button>
+      </div>
+      <div class="exp-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Designation / Job Title <span class="req">*</span></label>
+            <input type="text" data-id="${entry.id}" data-field="designation" value="${d.designation||''}" placeholder="e.g. Software Engineer, Data Analyst" oninput="updateField(this)">
+          </div>
+          <div class="form-group">
+            <label>Organization Name <span class="req">*</span></label>
+            <input type="text" data-id="${entry.id}" data-field="organization" value="${d.organization||''}" placeholder="e.g. XYZ Company Ltd." oninput="updateField(this)">
+          </div>
+          <div class="form-group">
+            <label>Field / Sector <span class="req">*</span></label>
+            <select data-id="${entry.id}" data-field="field" onchange="updateField(this)">
+              <option value="">Select Field</option>
+              ${FIELDS_OPTIONS.field.map(f=>`<option ${d.field===f?'selected':''}>${f}</option>`).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Employment Type</label>
+            <select data-id="${entry.id}" data-field="empType" onchange="updateField(this)">
+              <option value="">Select Type</option>
+              <option ${d.empType==='Full-Time'?'selected':''}>Full-Time</option>
+              <option ${d.empType==='Part-Time'?'selected':''}>Part-Time</option>
+              <option ${d.empType==='Contract'?'selected':''}>Contract</option>
+              <option ${d.empType==='Internship'?'selected':''}>Internship</option>
+              <option ${d.empType==='Freelance'?'selected':''}>Freelance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>From Date <span class="req">*</span></label>
+            <input type="month" data-id="${entry.id}" data-field="fromDate" value="${d.fromDate||''}" oninput="updateField(this);autoCalc('${entry.id}')">
+          </div>
+          <div class="form-group">
+            <label>To Date <span class="req">*</span></label>
+            <input type="month" data-id="${entry.id}" data-field="toDate" value="${d.toDate||''}" placeholder="Leave blank if current" oninput="updateField(this);autoCalc('${entry.id}')">
+          </div>
+          <div class="form-group">
+            <label>Experience in Months</label>
+            <input type="number" data-id="${entry.id}" data-field="expMonths" value="${d.expMonths||''}" placeholder="Auto-calculated" id="em_${entry.id}" readonly style="background:#f3f4f6;cursor:default;">
+          </div>
+          <div class="form-group">
+            <label>Experience in Years</label>
+            <input type="number" step="0.1" data-id="${entry.id}" data-field="expYears" value="${d.expYears||''}" placeholder="Auto-calculated" id="ey_${entry.id}" readonly style="background:#f3f4f6;cursor:default;">
+          </div>
+          <div class="form-group full">
+            <label>Key Responsibilities</label>
+            <textarea rows="2" data-id="${entry.id}" data-field="responsibilities" placeholder="Briefly describe your key duties and achievements..." oninput="updateField(this)">${d.responsibilities||''}</textarea>
+          </div>
+        </div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function updateField(el){
+  const id=el.dataset.id;
+  const field=el.dataset.field;
+  const entry=entries.find(e=>e.id===id);
+  if(entry)entry.data[field]=el.value;
+  updateTotal();
+}
+
+function autoCalc(id){
+  const entry=entries.find(e=>e.id===id);
+  if(!entry)return;
+  const from=entry.data.fromDate;
+  const to=entry.data.toDate||(new Date().toISOString().slice(0,7));
+  if(from&&to){
+    const [fy,fm]=from.split('-').map(Number);
+    const [ty,tm]=to.split('-').map(Number);
+    const totalM=(ty-fy)*12+(tm-fm);
+    if(totalM>=0){
+      entry.data.expMonths=totalM;
+      entry.data.expYears=(totalM/12).toFixed(1);
+      const em=document.getElementById('em_'+id);
+      const ey=document.getElementById('ey_'+id);
+      if(em)em.value=totalM;
+      if(ey)ey.value=(totalM/12).toFixed(1);
+    }
+  }
+  updateTotal();
+}
+
+function updateTotal(){
+  let totalM=0;
+  entries.forEach(e=>{totalM+=parseInt(e.data.expMonths||0);});
+  document.getElementById('totalYears').textContent=(totalM/12).toFixed(1)+' Years';
+  document.getElementById('totalMonths').textContent=totalM+' Months Total';
+  document.getElementById('entryCount').textContent=entries.length;
+}
+
+function saveAndNext(){
+  let valid=true;
+  entries.forEach(e=>{
+    if(!e.data.designation||!e.data.organization||!e.data.field){valid=false;}
+  });
+  if(!valid){alert('Please fill all required fields in each experience entry.');return;}
+  localStorage.setItem('pi_experience',JSON.stringify(entries.map(e=>e.data)));
+  window.location.href='view-application.html';
+}
+
+// Load saved
+window.onload=function(){
+  const saved=localStorage.getItem('pi_experience');
+  if(saved){
+    const arr=JSON.parse(saved);
+    arr.forEach(d=>addEntry(d));
+  }
+};
+</script>
+</body>
+</html>

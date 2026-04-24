@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PakJobs Portal – Official Job Application System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --blue: #1a56db;
+  --blue-light: #3b82f6;
+  --green: #059669;
+  --green-light: #10b981;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --gold: #f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,22,40,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:70px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--white);}
+.logo-text span{color:var(--green-light);}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-btn{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);padding:0.5rem 1.4rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem;transition:transform 0.2s,box-shadow 0.2s;}
+.nav-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(26,86,219,0.4);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:70px;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a1628 0%,#0d2347 50%,#0a1628 100%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,86,219,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(26,86,219,0.07) 1px,transparent 1px);background-size:50px 50px;}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(26,86,219,0.2) 0%,transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:2;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(5,150,105,0.15);border:1px solid rgba(16,185,129,0.3);padding:0.4rem 1rem;border-radius:50px;font-size:0.82rem;color:var(--green-light);font-weight:600;margin-bottom:1.5rem;}
+.hero-badge::before{content:'';width:8px;height:8px;background:var(--green-light);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+h1{font-family:'Playfair Display',serif;font-size:3.5rem;line-height:1.1;font-weight:900;margin-bottom:1.2rem;}
+h1 span{background:linear-gradient(135deg,var(--blue-light),var(--green-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-desc{font-size:1.05rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:2rem;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);padding:0.85rem 2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;transition:all 0.3s;box-shadow:0 4px 20px rgba(26,86,219,0.4);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(26,86,219,0.5);}
+.btn-secondary{background:rgba(255,255,255,0.08);color:var(--white);padding:0.85rem 2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;border:1px solid rgba(255,255,255,0.15);transition:all 0.3s;}
+.btn-secondary:hover{background:rgba(255,255,255,0.15);}
+.hero-stats{display:flex;gap:2rem;margin-top:2.5rem;}
+.stat{text-align:left;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--white);}
+.stat-label{font-size:0.8rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;}
+
+/* ── HERO IMAGE ── */
+.hero-visual{position:relative;}
+.portal-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:2rem;backdrop-filter:blur(10px);}
+.portal-card-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.1);}
+.pch-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.pch-text h3{font-size:1rem;font-weight:600;}
+.pch-text p{font-size:0.8rem;color:rgba(255,255,255,0.5);}
+.progress-steps{display:flex;flex-direction:column;gap:0.8rem;}
+.step{display:flex;align-items:center;gap:12px;padding:0.8rem;border-radius:10px;transition:background 0.2s;}
+.step:hover{background:rgba(255,255,255,0.05);}
+.step-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+.step.done .step-num{background:var(--green);color:var(--white);}
+.step.active .step-num{background:var(--blue);color:var(--white);}
+.step.pending .step-num{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);}
+.step-label{font-size:0.9rem;font-weight:500;}
+.step.pending .step-label{color:rgba(255,255,255,0.4);}
+.step-check{margin-left:auto;font-size:1rem;}
+
+/* ── JOBS SECTION ── */
+.section{padding:6rem 2rem;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--green-light);font-weight:600;margin-bottom:0.5rem;}
+.section-title{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;margin-bottom:1rem;}
+.section-sub{color:rgba(255,255,255,0.55);font-size:1rem;max-width:500px;line-height:1.6;}
+.jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;margin-top:3rem;}
+.job-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:1.5rem;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden;}
+.job-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,86,219,0.05),rgba(5,150,105,0.05));opacity:0;transition:opacity 0.3s;}
+.job-card:hover{transform:translateY(-4px);border-color:rgba(26,86,219,0.4);box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.job-card:hover::before{opacity:1;}
+.job-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+.job-org{display:flex;align-items:center;gap:10px;}
+.job-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:var(--white);}
+.job-org-name{font-size:0.85rem;color:rgba(255,255,255,0.55);}
+.job-title{font-size:1.05rem;font-weight:600;margin-bottom:0.3rem;}
+.job-badge{padding:0.25rem 0.7rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+.badge-open{background:rgba(5,150,105,0.15);color:var(--green-light);border:1px solid rgba(16,185,129,0.3);}
+.badge-closing{background:rgba(245,158,11,0.15);color:var(--gold);border:1px solid rgba(245,158,11,0.3);}
+.job-meta{display:flex;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+.job-meta span{font-size:0.8rem;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:4px;}
+.job-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);}
+.job-deadline{font-size:0.8rem;color:rgba(255,255,255,0.4);}
+.apply-btn{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:var(--white);padding:0.5rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:600;transition:all 0.2s;}
+.apply-btn:hover{box-shadow:0 4px 15px rgba(26,86,219,0.5);}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);}
+.steps-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:3rem;position:relative;}
+.steps-row::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--blue),var(--green));z-index:0;}
+.how-step{text-align:center;position:relative;z-index:1;}
+.how-num{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin:0 auto 1rem;box-shadow:0 0 0 8px var(--navy);}
+.how-step h4{font-size:0.95rem;font-weight:600;margin-bottom:0.3rem;}
+.how-step p{font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.5;}
+
+/* ── FOOTER ── */
+footer{background:#060f1e;border-top:1px solid rgba(255,255,255,0.06);padding:2rem;text-align:center;}
+footer p{color:rgba(255,255,255,0.3);font-size:0.85rem;}
+footer a{color:var(--blue-light);text-decoration:none;}
+
+/* ── HERO BG IMAGE ── */
+.hero-img-wrapper{position:relative;}
+.hero-img-wrapper img{width:100%;border-radius:20px;object-fit:cover;max-height:420px;border:2px solid rgba(255,255,255,0.08);}
+.hero-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.6),transparent);border-radius:20px;}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-visual{display:none;}
+  h1{font-size:2.5rem;}
+  .steps-row{grid-template-columns:1fr 1fr;gap:1.5rem;}
+  .steps-row::before{display:none;}
+  .jobs-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-icon">🏛️</div>
+      <div class="logo-text">Pak<span>Jobs</span> Portal</div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="personal-info.html">Apply Now</a>
+      <a href="#jobs">Jobs</a>
+      <a href="#how">How It Works</a>
+      <a href="view-application.html" class="nav-btn">View Application</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">🟢 Applications Open – 2025</div>
+      <h1>Pakistan's Official <span>Job Application</span> Portal</h1>
+      <p class="hero-desc">Apply for government & public sector jobs through a secure, streamlined digital process. Submit your complete profile in minutes — Personal Info, Education, Skills, Experience.</p>
+      <div class="hero-actions">
+        <a href="personal-info.html" class="btn-primary">🚀 Start Application</a>
+        <a href="#jobs" class="btn-secondary">Browse Jobs</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">4,200+</div><div class="stat-label">Active Posts</div></div>
+        <div class="stat"><div class="stat-num">180+</div><div class="stat-label">Departments</div></div>
+        <div class="stat"><div class="stat-num">98k+</div><div class="stat-label">Applicants</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <div class="pch-icon">📋</div>
+          <div class="pch-text">
+            <h3>Application Progress</h3>
+            <p>Complete all 4 sections</p>
+          </div>
+        </div>
+        <div class="progress-steps">
+          <div class="step done">
+            <div class="step-num">1</div>
+            <div class="step-label">Personal Information</div>
+            <div class="step-check">✅</div>
+          </div>
+          <div class="step active">
+            <div class="step-num">2</div>
+            <div class="step-label">Education Details</div>
+            <div class="step-check">📝</div>
+          </div>
+          <div class="step pending">
+            <div class="step-num">3</div>
+            <div class="step-label">Skills &amp; Expertise</div>
+            <div class="step-check">⏳</div>
+          </div>
+          <div class="step pending">
+            <div class="step-num">4</div>
+            <div class="step-label">Work Experience</div>
+            <div class="step-check">⏳</div>
+          </div>
+          <div class="step pending">
+            <div class="step-num">5</div>
+            <div class="step-label">Review &amp; Submit</div>
+            <div class="step-check">⏳</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOBS -->
+<section class="section" id="jobs">
+  <div class="section-inner">
+    <div class="section-tag">Open Positions</div>
+    <h2 class="section-title">Latest Job Postings</h2>
+    <p class="section-sub">Government and public sector positions currently accepting applications.</p>
+    <div class="jobs-grid">
+
+      <div class="job-card">
+        <div class="job-card-top">
+          <div class="job-org">
+            <div class="job-logo" style="background:linear-gradient(135deg,#1a56db,#3b82f6)">🏛️</div>
+            <div>
+              <div class="job-title">Software Engineer</div>
+              <div class="job-org-name">PITB – Punjab IT Board</div>
+            </div>
+          </div>
+          <span class="job-badge badge-open">Open</span>
+        </div>
+        <div class="job-meta">
+          <span>📍 Lahore</span><span>💰 PKR 80,000–120,000</span><span>💼 Full Time</span>
+        </div>
+        <div class="job-footer">
+          <div class="job-deadline">Deadline: 15 Feb 2025</div>
+          <a href="personal-info.html?job=Software+Engineer+PITB" class="apply-btn">Apply Now</a>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-top">
+          <div class="job-org">
+            <div class="job-logo" style="background:linear-gradient(135deg,#059669,#10b981)">🏥</div>
+            <div>
+              <div class="job-title">Medical Officer</div>
+              <div class="job-org-name">Health Department Punjab</div>
+            </div>
+          </div>
+          <span class="job-badge badge-closing">Closing Soon</span>
+        </div>
+        <div class="job-meta">
+          <span>📍 Multiple Cities</span><span>💰 PKR 95,000+</span><span>💼 Government</span>
+        </div>
+        <div class="job-footer">
+          <div class="job-deadline">Deadline: 05 Feb 2025</div>
+          <a href="personal-info.html?job=Medical+Officer+Punjab" class="apply-btn">Apply Now</a>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-top">
+          <div class="job-org">
+            <div class="job-logo" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">⚖️</div>
+            <div>
+              <div class="job-title">Assistant Director</div>
+              <div class="job-org-name">Federal Public Service Commission</div>
+            </div>
+          </div>
+          <span class="job-badge badge-open">Open</span>
+        </div>
+        <div class="job-meta">
+          <span>📍 Islamabad</span><span>💰 PKR 75,000–100,000</span><span>💼 BPS-17</span>
+        </div>
+        <div class="job-footer">
+          <div class="job-deadline">Deadline: 28 Feb 2025</div>
+          <a href="personal-info.html?job=Assistant+Director+FPSC" class="apply-btn">Apply Now</a>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-top">
+          <div class="job-org">
+            <div class="job-logo" style="background:linear-gradient(135deg,#dc2626,#f87171)">🎓</div>
+            <div>
+              <div class="job-title">Lecturer (Computer Science)</div>
+              <div class="job-org-name">Higher Education Commission</div>
+            </div>
+          </div>
+          <span class="job-badge badge-open">Open</span>
+        </div>
+        <div class="job-meta">
+          <span>📍 Karachi</span><span>💰 PKR 85,000+</span><span>💼 Academic</span>
+        </div>
+        <div class="job-footer">
+          <div class="job-deadline">Deadline: 20 Feb 2025</div>
+          <a href="personal-info.html?job=Lecturer+CS+HEC" class="apply-btn">Apply Now</a>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-top">
+          <div class="job-org">
+            <div class="job-logo" style="background:linear-gradient(135deg,#0891b2,#22d3ee)">🔬</div>
+            <div>
+              <div class="job-title">Data Analyst</div>
+              <div class="job-org-name">National Database Authority (NADRA)</div>
+            </div>
+          </div>
+          <span class="job-badge badge-open">Open</span>
+        </div>
+        <div class="job-meta">
+          <span>📍 Islamabad</span><span>💰 PKR 70,000–90,000</span><span>💼 Full Time</span>
+        </div>
+        <div class="job-footer">
+          <div class="job-deadline">Deadline: 10 Mar 2025</div>
+          <a href="personal-info.html?job=Data+Analyst+NADRA" class="apply-btn">Apply Now</a>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-top">
+          <div class="job-org">
+            <div class="job-logo" style="background:linear-gradient(135deg,#b45309,#fbbf24)">🏗️</div>
+            <div>
+              <div class="job-title">Civil Engineer</div>
+              <div class="job-org-name">NHA – National Highway Authority</div>
+            </div>
+          </div>
+          <span class="job-badge badge-closing">Closing Soon</span>
+        </div>
+        <div class="job-meta">
+          <span>📍 Nationwide</span><span>💰 PKR 90,000+</span><span>💼 Contract</span>
+        </div>
+        <div class="job-footer">
+          <div class="job-deadline">Deadline: 08 Feb 2025</div>
+          <a href="personal-info.html?job=Civil+Engineer+NHA" class="apply-btn">Apply Now</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-section" id="how">
+  <div class="section-inner">
+    <div class="section-tag">Process</div>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Complete your application in 5 simple steps.</p>
+    <div class="steps-row">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <h4>Personal Info</h4>
+        <p>Fill in your CNIC, contact & address details</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <h4>Education</h4>
+        <p>Add Matric, Inter & Graduation records</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <h4>Skills</h4>
+        <p>Select your skills & proficiency levels</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <h4>Experience</h4>
+        <p>Enter your relevant work experience</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">5</div>
+        <h4>Apply & Submit</h4>
+        <p>Review and apply for your chosen job</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3rem;">
+      <a href="personal-info.html" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">Begin Application →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 PakJobs Portal. Official Government Job Application System. &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Contact Us</a></p>
+</footer>
+
+</body>
+</html>
